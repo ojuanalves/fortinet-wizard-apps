@@ -473,7 +473,6 @@
                     <label for="grupoSelect">Selecione o Grupo</label>
                     <select id="grupoSelect">
                         <option value="">Sem Grupo</option>
-                        <option value="LINHAUNI">LINHAUNI</option>
                         <option value="VPNSSL">VPNSSL (Mantenedora)</option>
                         <option value="USERS_VPN">USERS_VPN (Linha Uni)</option>
                     </select>
@@ -514,14 +513,6 @@
                 <div class="output-code" id="outputCredentials"></div>
             </div>
 
-            <div class="output-section" id="groupSection" style="display: none;">
-                <div class="output-header">
-                    <h3>👨‍💼 Configuração do Grupo (LINHAUNI)</h3>
-                    <button class="btn-copy" id="btnCopyGroup" type="button">Copiar Grupo</button>
-                </div>
-                <div class="output-code" id="outputGroup"></div>
-            </div>
-
             <div class="output-section" id="vpnSection" style="display: none;">
                 <div class="output-header">
                     <h3>🔒 Configuração do Grupo (VPNSSL)</h3>
@@ -546,15 +537,12 @@
         const emailListContainer = document.getElementById('emailListContainer');
         const outputConfig = document.getElementById('outputConfig');
         const outputCredentials = document.getElementById('outputCredentials');
-        const outputGroup = document.getElementById('outputGroup');
-        const groupSection = document.getElementById('groupSection');
         const outputVPN = document.getElementById('outputVPN');
         const vpnSection = document.getElementById('vpnSection');
         const btnAdd = document.getElementById('btnAdd');
         const btnClear = document.getElementById('btnClear');
         const btnCopyConfig = document.getElementById('btnCopyConfig');
         const btnCopyCredentials = document.getElementById('btnCopyCredentials');
-        const btnCopyGroup = document.getElementById('btnCopyGroup');
         const btnCopyVPN = document.getElementById('btnCopyVPN');
         const outputUsersVPN = document.getElementById('outputUsersVPN');
         const usersVpnSection = document.getElementById('usersVpnSection');
@@ -658,24 +646,6 @@
             return credentials;
         }
 
-        function generateGroupConfig() {
-            const linhuniUsers = emails.filter(e => e.grupo === 'LINHAUNI');
-            
-            if (linhuniUsers.length === 0) {
-                return '';
-            }
-            
-            let memberList = linhuniUsers.map(({ email }) => `"${email}"`).join(' ');
-            
-            let config = 'config user group\n';
-            config += `    edit "LINHAUNI"\n`;
-            config += `        append member ${memberList}\n`;
-            config += `    next\n`;
-            config += 'end';
-            
-            return config;
-        }
-
         function generateVPNConfig() {
             const vpnUsers = emails.filter(e => e.grupo === 'VPNSSL');
             
@@ -765,7 +735,6 @@
             renderEmailList();
             renderConfig();
             renderCredentials();
-            renderGroupConfig();
             renderVPNConfig();
             renderUsersVPNConfig();
             updateStats();
@@ -824,19 +793,6 @@
             }
         }
 
-        function renderGroupConfig() {
-            const linhuniUsers = emails.filter(e => e.grupo === 'LINHAUNI');
-            
-            if (linhuniUsers.length === 0) {
-                groupSection.style.display = 'none';
-                return;
-            }
-            
-            groupSection.style.display = 'block';
-            const config = generateGroupConfig();
-            outputGroup.textContent = config;
-        }
-
         function renderVPNConfig() {
             const vpnUsers = emails.filter(e => e.grupo === 'VPNSSL');
             
@@ -889,11 +845,6 @@
         btnCopyCredentials.addEventListener('click', () => {
             const credentials = generateCredentials();
             copyToClipboard(credentials, btnCopyCredentials);
-        });
-
-        btnCopyGroup.addEventListener('click', () => {
-            const config = generateGroupConfig();
-            copyToClipboard(config, btnCopyGroup);
         });
 
         btnCopyVPN.addEventListener('click', () => {
