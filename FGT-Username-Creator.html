@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FGT Username Creator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a7f5a;
+            --primary-light: #2d9d6f;
+            --primary-dark: #135a3f;
+            --success: #2d9d6f;
+            --danger: #dc3545;
+            --gray-50: #f8f9fa;
+            --gray-100: #e9ecef;
+            --gray-200: #dee2e6;
+            --gray-300: #ced4da;
+            --gray-400: #adb5bd;
+            --gray-500: #6c757d;
+            --gray-600: #495057;
+            --gray-700: #343a40;
+            --gray-800: #212529;
+            --gray-900: #111827;
+            --border-radius: 4px;
+            --border-radius-lg: 6px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #f1f3f5;
+            color: var(--gray-800);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 30px 30px;
+            text-align: left;
+            border-bottom: 4px solid var(--primary-dark);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--gray-700);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 14px;
+            border: 1.5px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            background: white;
+            color: var(--gray-800);
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:hover {
+            border-color: var(--gray-400);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 127, 90, 0.1);
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 14px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            background: #fafbfc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23495057' d='M1 1l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 12px center;
+            color: var(--gray-800);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            appearance: none;
+            padding-right: 36px;
+        }
+
+        .form-group select:hover {
+            border-color: var(--gray-400);
+            background-color: white;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(26, 127, 90, 0.1);
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            box-shadow: 0 2px 8px rgba(26, 127, 90, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+            border-color: var(--gray-400);
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.98);
+        }
+
+        .email-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .email-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .email-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .email-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .email-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .email-address {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-800);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-bottom: 4px;
+        }
+
+        .password-preview {
+            font-size: 12px;
+            color: var(--gray-500);
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn-remove {
+            padding: 8px 16px;
+            font-size: 12px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-left: 12px;
+        }
+
+        .btn-remove:hover {
+            background: #dc2626;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        .output-section {
+            margin-bottom: 32px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .output-header h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-800);
+            letter-spacing: -0.3px;
+        }
+
+        .btn-copy {
+            padding: 8px 16px;
+            font-size: 12px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-copy:hover {
+            background: #059669;
+            box-shadow: 0 2px 8px rgba(45, 157, 111, 0.3);
+        }
+
+        .btn-copy.copied {
+            background: var(--success);
+        }
+
+        .output-code {
+            background: #f8f9fa;
+            color: #2d3748;
+            padding: 16px;
+            border-radius: var(--border-radius);
+            font-family: 'Courier New', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre;
+            word-wrap: break-word;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+        }
+
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--gray-400);
+            font-size: 14px;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .success-badge {
+            display: inline-block;
+            background: var(--success);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            padding: 16px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--gray-200);
+            text-align: center;
+        }
+
+        .stat-card-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-card-label {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .success-message {
+            padding: 12px 16px;
+            background: #d1fae5;
+            color: #065f46;
+            border-radius: var(--border-radius);
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 24px 16px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .email-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .btn-remove {
+                margin-left: 0;
+                margin-top: 12px;
+                width: 100%;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 20px 16px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 FGT Username Creator</h1>
+        </div>
+
+        <div class="content">
+            <div class="success-message" id="successMessage">
+                ✓ Copiado para a área de transferência!
+            </div>
+
+            <div class="two-column">
+                <div class="form-group">
+                    <label for="emailInput">Adicionar Usuário</label>
+                    <input 
+                        type="text" 
+                        id="emailInput" 
+                        placeholder="Digite o e-mail ou nome de usuário"
+                        autocomplete="off"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="grupoSelect">Selecione o Grupo</label>
+                    <select id="grupoSelect">
+                        <option value="">Sem Grupo</option>
+                        <option value="LINHAUNI">LINHAUNI</option>
+                        <option value="VPNSSL">VPNSSL (Mantenedora)</option>
+                        <option value="USERS_VPN">USERS_VPN (Linha Uni)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-primary" id="btnAdd" type="button">+ Adicionar</button>
+                <button class="btn-secondary" id="btnClear" type="button">🗑 Limpar Tudo</button>
+            </div>
+
+            <div class="stats" id="statsContainer" style="display: none;">
+                <div class="stat-card">
+                    <div class="stat-card-value" id="totalUsers">0</div>
+                    <div class="stat-card-label">Total de Usuários</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-label">Status</div>
+                    <span class="success-badge">Pronto</span>
+                </div>
+            </div>
+
+            <div id="emailListContainer"></div>
+
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>📋 Configuração FortiGate</h3>
+                    <button class="btn-copy" id="btnCopyConfig" type="button">Copiar Código</button>
+                </div>
+                <div class="output-code" id="outputConfig"></div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>👥 Credenciais para Compartilhar</h3>
+                    <button class="btn-copy" id="btnCopyCredentials" type="button">Copiar Credenciais</button>
+                </div>
+                <div class="output-code" id="outputCredentials"></div>
+            </div>
+
+            <div class="output-section" id="groupSection" style="display: none;">
+                <div class="output-header">
+                    <h3>👨‍💼 Configuração do Grupo (LINHAUNI)</h3>
+                    <button class="btn-copy" id="btnCopyGroup" type="button">Copiar Grupo</button>
+                </div>
+                <div class="output-code" id="outputGroup"></div>
+            </div>
+
+            <div class="output-section" id="vpnSection" style="display: none;">
+                <div class="output-header">
+                    <h3>🔒 Configuração do Grupo (VPNSSL)</h3>
+                    <button class="btn-copy" id="btnCopyVPN" type="button">Copiar Grupo</button>
+                </div>
+                <div class="output-code" id="outputVPN"></div>
+            </div>
+
+            <div class="output-section" id="usersVpnSection" style="display: none;">
+                <div class="output-header">
+                    <h3>🌐 Configuração do Grupo (USERS_VPN)</h3>
+                    <button class="btn-copy" id="btnCopyUsersVPN" type="button">Copiar Grupo</button>
+                </div>
+                <div class="output-code" id="outputUsersVPN"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const emailInput = document.getElementById('emailInput');
+        const grupoSelect = document.getElementById('grupoSelect');
+        const emailListContainer = document.getElementById('emailListContainer');
+        const outputConfig = document.getElementById('outputConfig');
+        const outputCredentials = document.getElementById('outputCredentials');
+        const outputGroup = document.getElementById('outputGroup');
+        const groupSection = document.getElementById('groupSection');
+        const outputVPN = document.getElementById('outputVPN');
+        const vpnSection = document.getElementById('vpnSection');
+        const btnAdd = document.getElementById('btnAdd');
+        const btnClear = document.getElementById('btnClear');
+        const btnCopyConfig = document.getElementById('btnCopyConfig');
+        const btnCopyCredentials = document.getElementById('btnCopyCredentials');
+        const btnCopyGroup = document.getElementById('btnCopyGroup');
+        const btnCopyVPN = document.getElementById('btnCopyVPN');
+        const outputUsersVPN = document.getElementById('outputUsersVPN');
+        const usersVpnSection = document.getElementById('usersVpnSection');
+        const btnCopyUsersVPN = document.getElementById('btnCopyUsersVPN');
+        const statsContainer = document.getElementById('statsContainer');
+        const totalUsersEl = document.getElementById('totalUsers');
+        const successMessage = document.getElementById('successMessage');
+
+        let emails = [];
+
+        function generatePassword(length = 26) {
+            const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+            const numbers = '0123456789';
+            const symbols = '!@#$%^&*()-_=+[]{}|;:,.<>?';
+            
+            const all = uppercase + lowercase + numbers + symbols;
+            let password = '';
+            
+            password += uppercase[Math.floor(Math.random() * uppercase.length)];
+            password += lowercase[Math.floor(Math.random() * lowercase.length)];
+            password += numbers[Math.floor(Math.random() * numbers.length)];
+            password += symbols[Math.floor(Math.random() * symbols.length)];
+            
+            for (let i = password.length; i < length; i++) {
+                password += all[Math.floor(Math.random() * all.length)];
+            }
+            
+            return password.split('').sort(() => Math.random() - 0.5).join('');
+        }
+
+        function addEmail() {
+            const email = emailInput.value.trim();
+            const grupo = grupoSelect.value;
+            
+            if (!email) {
+                alert('Por favor, digite um usuário válido');
+                emailInput.focus();
+                return;
+            }
+            
+            if (emails.some(e => e.email === email)) {
+                alert('Este usuário já foi adicionado');
+                emailInput.focus();
+                return;
+            }
+            
+            const password = generatePassword(26);
+            emails.push({ email, password, grupo });
+            
+            emailInput.value = '';
+            grupoSelect.value = '';
+            emailInput.focus();
+            render();
+        }
+
+        function removeEmail(email) {
+            emails = emails.filter(e => e.email !== email);
+            render();
+        }
+
+        function clearAll() {
+            if (emails.length === 0) return;
+            if (confirm('Tem certeza que deseja limpar todos os usuários?')) {
+                emails = [];
+                render();
+            }
+        }
+
+        function generateConfig() {
+            if (emails.length === 0) {
+                return 'config user local\nend';
+            }
+            
+            let config = 'config user local\n';
+            emails.forEach(({ email, password }) => {
+                config += `    edit "${email}"\n`;
+                config += `        set type password\n`;
+                config += `        set passwd ${password}\n`;
+                config += `    next\n`;
+            });
+            config += 'end';
+            
+            return config;
+        }
+
+        function generateCredentials() {
+            if (emails.length === 0) {
+                return '';
+            }
+            
+            let credentials = '';
+            emails.forEach(({ email, password }, index) => {
+                credentials += `Username: ${email}\n`;
+                credentials += `Password: ${password}\n`;
+                if (index < emails.length - 1) {
+                    credentials += '\n';
+                }
+            });
+            
+            return credentials;
+        }
+
+        function generateGroupConfig() {
+            const linhuniUsers = emails.filter(e => e.grupo === 'LINHAUNI');
+            
+            if (linhuniUsers.length === 0) {
+                return '';
+            }
+            
+            let memberList = linhuniUsers.map(({ email }) => `"${email}"`).join(' ');
+            
+            let config = 'config user group\n';
+            config += `    edit "LINHAUNI"\n`;
+            config += `        append member ${memberList}\n`;
+            config += `    next\n`;
+            config += 'end';
+            
+            return config;
+        }
+
+        function generateVPNConfig() {
+            const vpnUsers = emails.filter(e => e.grupo === 'VPNSSL');
+            
+            if (vpnUsers.length === 0) {
+                return '';
+            }
+            
+            let memberList = vpnUsers.map(({ email }) => `"${email}"`).join(' ');
+            
+            let config = 'config user group\n';
+            config += `    edit "VPNSSL"\n`;
+            config += `        append member ${memberList}\n`;
+            config += `    next\n`;
+            config += 'end';
+            
+            return config;
+        }
+
+        function generateUsersVPNConfig() {
+            const usersVpnUsers = emails.filter(e => e.grupo === 'USERS_VPN');
+            
+            if (usersVpnUsers.length === 0) {
+                return '';
+            }
+            
+            let memberList = usersVpnUsers.map(({ email }) => `"${email}"`).join(' ');
+            
+            let config = 'config user group\n';
+            config += `    edit "USERS_VPN"\n`;
+            config += `        append member ${memberList}\n`;
+            config += `    next\n`;
+            config += 'end';
+            
+            return config;
+        }
+
+        function copyToClipboard(text, button) {
+            if (!text) {
+                alert('Nada para copiar');
+                return;
+            }
+
+            try {
+                navigator.clipboard.writeText(text).then(() => {
+                    const originalText = button.textContent;
+                    button.textContent = '✓ Copiado!';
+                    button.classList.add('copied');
+                    
+                    successMessage.classList.add('show');
+                    setTimeout(() => {
+                        successMessage.classList.remove('show');
+                    }, 2000);
+                    
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Erro ao copiar:', err);
+                    fallbackCopy(text);
+                });
+            } catch (err) {
+                console.error('Erro:', err);
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                alert('✓ Copiado para a área de transferência!');
+            } catch (err) {
+                alert('Erro ao copiar. Tente manualmente.');
+            }
+            
+            document.body.removeChild(textarea);
+        }
+
+        function render() {
+            renderEmailList();
+            renderConfig();
+            renderCredentials();
+            renderGroupConfig();
+            renderVPNConfig();
+            renderUsersVPNConfig();
+            updateStats();
+        }
+
+        function updateStats() {
+            totalUsersEl.textContent = emails.length;
+            if (emails.length > 0) {
+                statsContainer.style.display = 'flex';
+            } else {
+                statsContainer.style.display = 'none';
+            }
+        }
+
+        function renderEmailList() {
+            if (emails.length === 0) {
+                emailListContainer.innerHTML = '';
+                return;
+            }
+
+            emailListContainer.innerHTML = `
+                <div style="margin-bottom: 32px;">
+                    <div class="email-list">
+                        ${emails.map(({ email, password, grupo }) => `
+                            <div class="email-item">
+                                <div class="email-info">
+                                    <div class="email-icon">👤</div>
+                                    <div class="email-details">
+                                        <div class="email-address">${escapeHtml(email)}</div>
+                                        <div class="password-preview">Senha: ${password.substring(0, 15)}... ${grupo ? `| Grupo: ${grupo}` : ''}</div>
+                                    </div>
+                                </div>
+                                <button class="btn-remove" type="button" onclick="removeEmailHandler('${escapeHtml(email).replace(/'/g, "\\'")}')">Remover</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderConfig() {
+            const config = generateConfig();
+            if (emails.length === 0) {
+                outputConfig.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚙️</div>Adicione usuários para gerar a configuração...</div>';
+            } else {
+                outputConfig.textContent = config;
+            }
+        }
+
+        function renderCredentials() {
+            const credentials = generateCredentials();
+            if (emails.length === 0) {
+                outputCredentials.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔑</div>Adicione usuários para gerar as credenciais...</div>';
+            } else {
+                outputCredentials.textContent = credentials;
+            }
+        }
+
+        function renderGroupConfig() {
+            const linhuniUsers = emails.filter(e => e.grupo === 'LINHAUNI');
+            
+            if (linhuniUsers.length === 0) {
+                groupSection.style.display = 'none';
+                return;
+            }
+            
+            groupSection.style.display = 'block';
+            const config = generateGroupConfig();
+            outputGroup.textContent = config;
+        }
+
+        function renderVPNConfig() {
+            const vpnUsers = emails.filter(e => e.grupo === 'VPNSSL');
+            
+            if (vpnUsers.length === 0) {
+                vpnSection.style.display = 'none';
+                return;
+            }
+            
+            vpnSection.style.display = 'block';
+            const config = generateVPNConfig();
+            outputVPN.textContent = config;
+        }
+
+        function renderUsersVPNConfig() {
+            const usersVpnUsers = emails.filter(e => e.grupo === 'USERS_VPN');
+            
+            if (usersVpnUsers.length === 0) {
+                usersVpnSection.style.display = 'none';
+                return;
+            }
+            
+            usersVpnSection.style.display = 'block';
+            const config = generateUsersVPNConfig();
+            outputUsersVPN.textContent = config;
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        function removeEmailHandler(email) {
+            removeEmail(email);
+        }
+
+        btnAdd.addEventListener('click', addEmail);
+        btnClear.addEventListener('click', clearAll);
+        
+        btnCopyConfig.addEventListener('click', () => {
+            const config = generateConfig();
+            copyToClipboard(config, btnCopyConfig);
+        });
+
+        btnCopyCredentials.addEventListener('click', () => {
+            const credentials = generateCredentials();
+            copyToClipboard(credentials, btnCopyCredentials);
+        });
+
+        btnCopyGroup.addEventListener('click', () => {
+            const config = generateGroupConfig();
+            copyToClipboard(config, btnCopyGroup);
+        });
+
+        btnCopyVPN.addEventListener('click', () => {
+            const config = generateVPNConfig();
+            copyToClipboard(config, btnCopyVPN);
+        });
+
+        btnCopyUsersVPN.addEventListener('click', () => {
+            const config = generateUsersVPNConfig();
+            copyToClipboard(config, btnCopyUsersVPN);
+        });
+
+        emailInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addEmail();
+            }
+        });
+
+        render();
+    </script>
+</body>
+</html>
